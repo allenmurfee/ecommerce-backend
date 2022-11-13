@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     });
     res.status(200).json(find);
   } catch (err) {
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
   // find all products
   // be sure to include its associated Category and Tag data
@@ -22,15 +22,12 @@ router.get("/:id", async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
   try {
-    const find = await Product.findbyPk(req.params.id, {
-      include: [
-        { model: Category },
-        { model: Tag, through: ProductTag, as: product_tag },
-      ],
+    const find = await Product.findByPk(req.params.id, {
+      include: [{ model: Category }, { model: Tag }],
     });
     res.status(200).json(find);
   } catch (err) {
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
 });
 
@@ -48,8 +45,11 @@ router.post("/", (req, res) => {
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
-        const productTagIdArr = req.body.tagIds.map((tag_id) => {
+      if (req.body.tag_id) {
+        console.log("tag id if statement firing");
+        // let tagArr = Array.from(req.body.tag_id);
+        // console.log(tagArr);
+        const productTagIdArr = req.body.tag_id.map((tag_id) => {
           return {
             product_id: product.id,
             tag_id,
@@ -63,7 +63,7 @@ router.post("/", (req, res) => {
     .then((productTagIds) => res.status(200).json(productTagIds))
     .catch((err) => {
       console.log(err);
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 
@@ -105,7 +105,7 @@ router.put("/:id", (req, res) => {
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
       // console.log(err);
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 
@@ -119,7 +119,7 @@ router.delete("/:id", async (req, res) => {
     });
     res.status(200).json(destroy);
   } catch (err) {
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
 });
 
