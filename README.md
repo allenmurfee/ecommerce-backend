@@ -14,7 +14,7 @@ After installing the GitHub repository, you will need to run a MySQL server and 
 
 ![Project screenshot](./assets/screenshot.png)
 
-Additionally, here is a [tutorial video](./Assets/screen_recording.mov) to demonstrate how the application works.
+Additionally, here is a [tutorial video](./assets/screen_recording.mov) to demonstrate how the application works.
 
 ## Credits
 
